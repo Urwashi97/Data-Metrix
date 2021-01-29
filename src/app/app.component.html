@@ -1,0 +1,36 @@
+<!-- <div class="container">
+  <h1 class="mt-4">Data Metrix</h1>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Database name</mat-label>
+    <input matInput placeholder="Enter name of Database" [(ngModel)]="dbName" />
+  </mat-form-field>
+
+  <button (click)="createStore()">Create Store</button><br />
+  <input
+    class="form-control mb-5"
+    type="file"
+    class="upload"
+    (change)="changeListener($event)"
+  />
+  <table class="table table-bordered table-dark mt-5">
+    <thead>
+      <tr>
+        <th *ngFor="let item of lines; let i = index">{{ item }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of linesR; let i = index">
+        <td *ngFor="let itemm of lines; let j = index">{{ item }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<mat-grid-list *ngIf="csvLoaded" cols="20" rowHeight="150px">
+  <mat-grid-tile *ngFor="let tile of linesR" [colspan]="linesR.length">
+    {{ tile }}
+  </mat-grid-tile>
+</mat-grid-list> -->
+
+<app-csv-reader></app-csv-reader>

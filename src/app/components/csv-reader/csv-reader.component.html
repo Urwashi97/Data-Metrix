@@ -1,0 +1,111 @@
+<div class="container">
+  <div color="primary" class="title-container">
+    <h1>CSV Reader</h1>
+  </div>
+  <mat-divider></mat-divider>
+  <br />
+  <div *ngIf="fiscalYear.length == 0">
+    <a>
+      No data available in Indexed Db please upload new file from menu bar
+    </a>
+  </div>
+
+  <div class="fileSelector" *ngIf="fiscalYear.length != 0">
+    <mat-table
+      #table
+      matSort
+      (matSortChange)="sortData($event)"
+      id="mat-table"
+      (keydown)="scroll($event)"
+      [dataSource]="dbContent"
+    >
+      <ng-container
+        *ngFor="let col of displayedColumns; let i = index"
+        matColumnDef="{{ col }}"
+      >
+        <mat-header-cell mat-sort-header *matHeaderCellDef>
+          {{ col }}
+        </mat-header-cell>
+        <mat-cell
+          *matCellDef="let element"
+          contenteditable="true"
+          (click)="onKeyPress($event, element[col])"
+        >
+          {{ element[col] }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </div>
+</div>
+<div>
+  <div class="menu-bar">
+    <div class="menu-btn-container">
+      <div class="menu-button">
+        <button
+          [matMenuTriggerFor]="menu"
+          mat-fab
+          color="primary"
+          aria-label="Click for menu"
+        >
+          <mat-icon>home</mat-icon>
+        </button>
+      </div>
+    </div>
+    <mat-menu #menu="matMenu">
+      <!-- give local reference and tell this is manu by assigning 'matMenu' -->
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="year_menu"
+        [disabled]="fiscalYear.length == 0"
+      >
+        <mat-icon>menu_open</mat-icon>
+        <span>Select Fiscalyear</span>
+        <mat-menu #year_menu="matMenu">
+          <button
+            *ngFor="let year of fiscalYear"
+            (click)="yearSelected(year)"
+            mat-menu-item
+          >
+            {{ year }}
+          </button>
+        </mat-menu>
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="dept_menu">
+        <mat-icon>menu_open</mat-icon>
+        <span>Select Department</span>
+        <mat-menu #dept_menu="matMenu">
+          <button
+            *ngFor="let dept of deptName"
+            (click)="deptSelected(dept.name)"
+            mat-menu-item
+          >
+            {{ dept.name }}
+          </button>
+        </mat-menu>
+      </button>
+      <input
+        type="file"
+        (change)="onFileUpload($event)"
+        style="display: none"
+        multiple="false"
+        accept=".csv, .xlsx, .xls, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        #fileInput
+      />
+      <button mat-menu-item (click)="fileInput.click()">
+        <mat-icon>attach_file</mat-icon>
+        <span>Import </span>
+      </button>
+      <button mat-menu-item (click)="exportCSV()">
+        <mat-icon>save</mat-icon>
+        <span>Export </span>
+      </button>
+      <button mat-menu-item (click)="insertData()">
+        <mat-icon>save</mat-icon>
+        <span>Insert Data</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>
