@@ -10,6 +10,7 @@ export class IndexedDBService {
   private dbName: string;
   objectData: IndexedDb;
   finalData: any[] = [];
+  currentObj: String;
 
   dBName = new EventEmitter<string>();
 
@@ -326,20 +327,28 @@ export class IndexedDBService {
     });
   }
 
-  updateData() {
-    this.open().subscribe((db: any) => {
-      var trans = db.transaction('Sheet1', 'readwrite');
-      var store = trans.objectStore('Sheet1');
+  currentDB(db, year) {
+    this.setdbName(db);
+    this.currentObj = year;
+  }
 
+  updateData(dbContent) {
+    this.open().subscribe((db: any) => {
+      var trans = db.transaction(this.currentObj, 'readwrite');
+      var store = trans.objectStore(this.currentObj);
       store.openCursor().onsuccess = function (evt) {
         const cursor = evt.target.result;
-        if (cursor) {
-          cursor.value.Alias = 'brokl';
-          const request = cursor.update(cursor.value);
-          request.onsuccess = function () {};
+
+        if ((cursor.value.id = dbContent.id)) {
+          let updateData = cursor.value;
+          updateData = dbContent;
+          const request = store.put(updateData);
+          request.onsuccess = function () {
+            console.log('update on success');
+          };
         }
       };
-      var index = store.index('Volume');
+      //var index = store.index('Volume');
     });
   }
 }

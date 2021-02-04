@@ -47,4 +47,4 @@ const modules = [
   bootstrap: [AppComponent],
   exports: [modules],
 })
-export class AppModule {}
+export class AppModule { }

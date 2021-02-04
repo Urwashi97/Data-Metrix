@@ -17,8 +17,12 @@ mat-table {
   border: 1px solid #dddddd;
   font-family: arial, sans-serif;
   width: 100%;
+  min-inline-size: max-content;
 }
 
+mat-icon {font-size: 18px;}
+
+mat-footer-cell,
 mat-header-cell,
 mat-cell {
   border-right: 1px solid #dddddd;
